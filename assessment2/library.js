@@ -77,6 +77,7 @@ function runLibrary() {
 
   function runMainMenu() {
     console.log("Hello! Welcome to THE LIBRARY.");
+    console.log("----------------------------------")
     var quit = false;
     while(!quit) {
       var choice = sget("What would you like do?\n (1) Add a book to inventory\n (2) Remove a book from inventory\n (3) View all books\n (4) View all books given a genre\n (5) Search for a book by title or author\n (6) Checkout a book\n (7) Checkin a book\n (8) Exit").trim();
@@ -113,7 +114,22 @@ function runLibrary() {
     }
   }
 
+  function addBook() {
+    console.log("----------------------------------")
+    var questions = ["What's the book's title?", "What's the book's author?", "What's the book's genre?", "How many pages?"];
+    var attributes = ["title", "author", "genre", "bookLength"];
+    var template = { id: Object.size(inventory.books) };
+    for (var i=0; i<questions.length; i++) {
+      var bookProperty = sget(questions[i]).trim().toLowerCase();
+      console.log("----------------------------------")
+      template[attributes[i]] = bookProperty;
+    }
+    var book = new Book(template);
+    inventory.addBook(book);
+  }
+
   function viewAll() {
+    console.log("----------------------------------");
     console.log("Here's everything in the inventory");
     console.log("----------------------------------")
     for (var key in inventory.books) {
@@ -130,6 +146,27 @@ function runLibrary() {
       }
     }
   }
+
+  function viewSome() {
+    console.log("----------------------------------");
+    var bookGenre = sget("What genre are you looking for?").trim().toLowerCase();
+    console.log("----------------------------------")
+    console.log("Here's everything in the inventory that falls under that genre: ");
+    for (var key in inventory.books) {
+      if (inventory.books.hasOwnProperty(key) && inventory.books[key].genre === bookGenre) {
+        console.log("title: " + inventory.books[key].title);
+        console.log("    author: " + inventory.books[key].author);
+        console.log("    checked out?: " + inventory.books[key].borrowStatus);
+        if (inventory.books[key].borrowStatus === true) {
+          console.log("    borrower: " + inventory.books[key].borrower);
+          console.log("    return date: " + inventory.books[key].returnDate);
+        }
+        console.log("----------------------------------")
+      }
+    }
+  }
+
+
 
 
 
