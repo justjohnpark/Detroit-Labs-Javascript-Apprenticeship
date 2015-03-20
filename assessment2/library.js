@@ -62,8 +62,10 @@ function runLibrary() {
   inventory = new Inventory();
   initializeLibrary();
 
-
   // Sooo I have an ID system in place but I've let the user search for unique books by title. So this library assumes that there'll be no two books with the same title. Having the user search by ID seemed faulty (who remembers book id names?) and since this is a terminal program, I couldn't have something conveniently pop up to show all the books and their corresponding IDs.
+  function separate() {
+    console.log("----------------------------------");
+  };
 
   function initializeLibrary() {
     var template = { id: Object.size(inventory.books), title: "on the road", author: "jack kerouac", genre: "beat", bookLength: 320 };
@@ -80,7 +82,7 @@ function runLibrary() {
 
   function runMainMenu() {
     console.log("Hello! Welcome to THE LIBRARY.");
-    console.log("----------------------------------")
+    separate();
     var quit = false;
     while(!quit) {
       checkOverdueStatus();
@@ -119,23 +121,23 @@ function runLibrary() {
   }
 
   function addBook() {
-    console.log("----------------------------------");
+    separate();
     var questions = ["What's the book's title?", "What's the book's author?", "What's the book's genre?", "How many pages?"];
     var attributes = ["title", "author", "genre", "bookLength"];
     var template = { id: Object.size(inventory.books) };
     for (var i=0; i<questions.length; i++) {
       var bookProperty = sget(questions[i]).trim().toLowerCase();
-      console.log("----------------------------------");
+      separate();
       template[attributes[i]] = bookProperty;
     }
     var book = new Book(template);
     inventory.addBook(book);
     console.log("You've succesfully added this book to the inventory.");
-    console.log("----------------------------------");
+    separate();
   }
 
   function removeBook() {
-    console.log("----------------------------------");
+    separate();
     var found = false;
     var bookTitle = sget("What is the title of the book you want to remove from the inventory?").trim().toLowerCase();
     for (var key in inventory.books) {
@@ -147,7 +149,7 @@ function runLibrary() {
       }
     }
     if (found === false) { console.log("There's no book with that title. Try again."); removeBook(); }
-    console.log("----------------------------------");
+    separate();
   }
 
   //the logic for this probably isn't complete
@@ -160,9 +162,9 @@ function runLibrary() {
   }
 
   function viewAll() {
-    console.log("----------------------------------");
+    separate();
     console.log("Here's everything in the inventory");
-    console.log("----------------------------------");
+    separate();
     for (var key in inventory.books) {
       if (inventory.books.hasOwnProperty(key)) {
         console.log("id: " + inventory.books[key].id);
@@ -174,13 +176,13 @@ function runLibrary() {
           console.log("    borrower: " + inventory.books[key].borrower);
           console.log("    return date: " + inventory.books[key].returnDate);
         }
-        console.log("----------------------------------");
+        separate();
       }
     }
   }
 
   function viewSome() {
-    console.log("----------------------------------");
+    separate();
     var bookGenre = sget("What genre are you looking for?").trim().toLowerCase();
     console.log("----------------------------------")
     console.log("Here's everything in the inventory that falls under that genre: ");
@@ -193,29 +195,29 @@ function runLibrary() {
           console.log("    borrower: " + inventory.books[key].borrower);
           console.log("    return date: " + inventory.books[key].returnDate);
         }
-        console.log("----------------------------------");
+        separate();
       }
     }
   }
 
   function searchBook() {
     var found = false;
-    console.log("----------------------------------");
+    separate();
     var divider = sget("What would you like to search by? Title or author?").trim().toLowerCase();
-    console.log("----------------------------------");
+    separate();
     if (divider === "title") {
       var bookTitle = sget("What is the title of the book you want to find?").trim().toLowerCase();
       for (var key1 in inventory.books) {
         if (inventory.books.hasOwnProperty(key1) && inventory.books[key1].title === bookTitle) {
           console.log("That book is in our inventory. Go back to the main menu if you want to check it out.");
-          console.log("----------------------------------");
+          separate();
           found = true;
         }
       }
       if (found === false) { console.log("That book isn't in our inventory."); }
     } else if (divider === "author") {
       var bookAuthor = sget("Who is the author you want to find?").trim().toLowerCase();
-      console.log("----------------------------------");
+      separate();
       console.log("Here are all the books written by that author.");
       for (var key2 in inventory.books) {
         if (inventory.books.hasOwnProperty(key2) && inventory.books[key2].author === bookAuthor) {
@@ -225,7 +227,7 @@ function runLibrary() {
             console.log("    borrower: " + inventory.books[key2].borrower);
             console.log("    return date: " + inventory.books[key2].returnDate);
           }
-          console.log("----------------------------------");
+          separate();
           found = true;
         }
       }
@@ -237,14 +239,14 @@ function runLibrary() {
   }
 
   function checkOutBook() {
-    console.log("----------------------------------");
+    separate();
     var found = false;
     var bookTitle = sget("What is the title of the book you want to checkout?").trim().toLowerCase();
-    console.log("----------------------------------");
+    separate();
     for (var key in inventory.books) {
       if (inventory.books.hasOwnProperty(key) && inventory.books[key].title === bookTitle && inventory.books[key].borrowStatus === false) {
         var bookBorrower = sget("Who is borrowing this book?").trim().toLowerCase();
-        console.log("----------------------------------");
+        separate();
         var returnDate = new Date();
         returnDate = returnDate.addDays(21);
         var template = { name: bookBorrower, date: returnDate };
@@ -254,14 +256,14 @@ function runLibrary() {
       }
     }
     if (found === false) { console.log("There's no book with that title. Try again."); checkOutBook(); }
-    console.log("----------------------------------");
+    separate();
   }
 
   function checkInBook() {
-    console.log("----------------------------------");
+    separate();
     var found = false;
     var bookTitle = sget("What is the title of the book you are returning?").trim().toLowerCase();
-    console.log("----------------------------------");
+    separate();
     for (var key in inventory.books) {
       if (inventory.books.hasOwnProperty(key) && inventory.books[key].title === bookTitle && inventory.books[key].borrowStatus === true) {
         inventory.books[key].checkIn();
@@ -270,7 +272,7 @@ function runLibrary() {
       }
     }
     if (found === false) { console.log("There's no book with that title. Try another library. And stop smoking the good stuff."); checkInBook(); }
-    console.log("----------------------------------");
+    separate();
   }
 
   function checkOverdueStatus() {
