@@ -56,9 +56,14 @@ function runLibrary() {
       delete this.book[book.id];
     };
   }
+
+  function MenuOptions() {
+
+  }
   //--------------------------------------------------------
 
   inventory = new Inventory();
+  //create instance of menu options here
   initializeLibrary();
 
   function initializeLibrary() {
@@ -75,6 +80,8 @@ function runLibrary() {
   }
 
   function runMainMenu() {
+    console.log("Hello! Welcome to THE LIBRARY.");
+    var choice = sget("What would you like do?\n (1) Add a book to inventory\n (2) Remove a book from inventory\n (3) View all books\n (4) View all books given a genre\n (5) Search for a book by title or author\n (6) Checkout a book\n (7) Checkin a book\n (8) Exit");
 
   }
 
@@ -90,8 +97,6 @@ function runLibrary() {
 
 
 
-
-}
 
 Object.size = function(obj) {
     var size = 0, key;
