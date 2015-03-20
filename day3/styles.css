@@ -1,0 +1,66 @@
+body {
+  background-color: blue;
+  font-family: "Times New Roman", Georgia, Serif;
+}
+
+.paragraph {
+  font-size: 5em;
+  color: red;
+}
+
+ul {
+  background-color: teal;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  li {
+    margin-bottom: 25px;
+  }
+}
+
+header {
+  width: 100px;
+  height: 100%;
+  position: fixed;
+  padding: 10px;
+  top: 0;
+  left: 0;
+
+}
+
+section {
+  width: 800px;
+  position: relative;
+  margin-left: 50px;
+}
+
+/*a {
+  display: block;
+  width: 60px;
+}*/
+
+#par1 {
+  width: 190px;
+  margin-left: 10%;
+  border: solid 1px black;
+  border-right: solid 5px white;
+  padding: 50px;
+}
+
+#par2 {
+  width: 120px;
+  margin-left: 20%;
+  border: solid 1px white;
+  border-right: solid 5px black;
+  padding: 30px;
+}
+
+#par3 {
+  width: 60px;
+  /*margin-left: 750px;*/
+  border: solid 1px black;
+  border-right: solid 5px white;
+  padding: 10px;
+  float: right;
+}
+
