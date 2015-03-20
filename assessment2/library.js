@@ -62,6 +62,9 @@ function runLibrary() {
   inventory = new Inventory();
   initializeLibrary();
 
+
+  // So I have an ID system in place but I've let the user search for unique books by title. So this library assumes that there'll be no two books with the same title. Having the user search by ID seemed faulty (who remembers book id names?) and since this is a terminal program, I couldn't have something conveniently pop up to show all the books and their corresponding IDs.
+
   function initializeLibrary() {
     var template = { id: Object.size(inventory.books), title: "on the road", author: "jack kerouac", genre: "beat", bookLength: 320 };
     var book = new Book(template);
@@ -80,7 +83,7 @@ function runLibrary() {
     console.log("----------------------------------")
     var quit = false;
     while(!quit) {
-      var choice = sget("What would you like do?\n (1) Add a book to inventory\n (2) Remove a book from inventory\n (3) View all books\n (4) View all books given a genre\n (5) Search for a book by title or author\n (6) Checkout a book\n (7) Checkin a book\n (8) Exit").trim();
+      var choice = sget("What would you like do?\n (1) Add a book to inventory\n (2) Remove a book from inventory\n (3) View all books\n (4) View all books given a genre\n (5) Search for a book by title or author\n (6) Checkout a book\n (7) Return a book\n (8) Exit").trim();
       switch (choice) {
         case "1":
           addBook();
@@ -98,7 +101,7 @@ function runLibrary() {
           searchBook();
           break;
         case "6": 
-          checkoutBook();
+          checkOutBook();
           break;
         case "7": 
           checkInBook();
@@ -232,8 +235,45 @@ function runLibrary() {
     }
   }
 
-}
+  function checkOutBook() {
+    console.log("----------------------------------");
+    var found = false;
+    var bookTitle = sget("What is the title of the book you want to checkout?").trim().toLowerCase();
+    console.log("----------------------------------");
+    for (var key in inventory.books) {
+      if (inventory.books.hasOwnProperty(key) && inventory.books[key].title === bookTitle && inventory.books[key].borrowStatus === false) {
+        var bookBorrower = sget("Who is borrowing this book?").trim().toLowerCase();
+        console.log("----------------------------------");
+        var returnDate = new Date();
+        returnDate = returnDate.addDays(21);
+        var template = { name: bookBorrower, date: returnDate };
+        inventory.books[key].checkOut(template);
+        console.log("You've successfuly checked this book out. It's due in 3 weeks.");
+        found = true;
+      }
+    }
+    if (found === false) { console.log("There's no book with that title. Try again."); checkOutBook(); }
+    console.log("----------------------------------");
+  }
 
+  function checkInBook() {
+    console.log("----------------------------------");
+    var found = false;
+    var bookTitle = sget("What is the title of the book you are returning?").trim().toLowerCase();
+    console.log("----------------------------------");
+    for (var key in inventory.books) {
+      if (inventory.books.hasOwnProperty(key) && inventory.books[key].title === bookTitle && inventory.books[key].borrowStatus === true) {
+        inventory.books[key].checkIn();
+        console.log("You've successfuly returned this book.");
+        found = true;
+      }
+    }
+    if (found === false) { console.log("There's no book with that title. Try another library. And stop smoking the good stuff."); checkInBook(); }
+    console.log("----------------------------------");
+  }
+
+
+}
 
 Object.size = function(obj) {
     var size = 0, key;
@@ -241,6 +281,12 @@ Object.size = function(obj) {
         if (obj.hasOwnProperty(key)) size++;
     }
     return size;
+};
+
+Date.prototype.addDays = function(days) {
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
 };
 
 runLibrary();
