@@ -115,25 +115,52 @@ function runLibrary() {
   }
 
   function addBook() {
-    console.log("----------------------------------")
+    console.log("----------------------------------");
     var questions = ["What's the book's title?", "What's the book's author?", "What's the book's genre?", "How many pages?"];
     var attributes = ["title", "author", "genre", "bookLength"];
     var template = { id: Object.size(inventory.books) };
     for (var i=0; i<questions.length; i++) {
       var bookProperty = sget(questions[i]).trim().toLowerCase();
-      console.log("----------------------------------")
+      console.log("----------------------------------");
       template[attributes[i]] = bookProperty;
     }
     var book = new Book(template);
     inventory.addBook(book);
+    console.log("You've succesfully added this book to the inventory.");
+    console.log("----------------------------------");
+  }
+
+  function removeBook() {
+    console.log("----------------------------------");
+    var found = false;
+    var bookTitle = sget("What is the title of the book you want to remove from the inventory?").trim().toLowerCase();
+    for (var key in inventory.books) {
+      if (inventory.books.hasOwnProperty(key) && inventory.books[key].title === bookTitle) {
+        console.log("You've successfuly removed that book from the inventory.");
+        delete inventory.books[key];
+        adjustIDs(key);
+        found = true;
+      }
+    }
+    if (found === false) { console.log("There's no book with that title. Try again."); removeBook(); }
+    console.log("----------------------------------");
+  }
+
+  function adjustIDs(index) {
+    for (var key in inventory.books) {
+      if (inventory.books.hasOwnProperty(key) && inventory.books[key].id > index) {
+        inventory.books[key].id -= 1;
+      }
+    }
   }
 
   function viewAll() {
     console.log("----------------------------------");
     console.log("Here's everything in the inventory");
-    console.log("----------------------------------")
+    console.log("----------------------------------");
     for (var key in inventory.books) {
       if (inventory.books.hasOwnProperty(key)) {
+        console.log("id: " + inventory.books[key].id);
         console.log("title: " + inventory.books[key].title);
         console.log("    author: " + inventory.books[key].author);
         console.log("    genre: " + inventory.books[key].genre);
@@ -142,7 +169,7 @@ function runLibrary() {
           console.log("    borrower: " + inventory.books[key].borrower);
           console.log("    return date: " + inventory.books[key].returnDate);
         }
-        console.log("----------------------------------")
+        console.log("----------------------------------");
       }
     }
   }
@@ -161,7 +188,7 @@ function runLibrary() {
           console.log("    borrower: " + inventory.books[key].borrower);
           console.log("    return date: " + inventory.books[key].returnDate);
         }
-        console.log("----------------------------------")
+        console.log("----------------------------------");
       }
     }
   }
