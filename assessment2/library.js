@@ -152,7 +152,6 @@ function runLibrary() {
     separate();
   }
 
-  //the logic for this probably isn't complete
   function adjustIDs(index) {
     for (var key in inventory.books) {
       if (inventory.books.hasOwnProperty(key) && inventory.books[key].id > index) {
