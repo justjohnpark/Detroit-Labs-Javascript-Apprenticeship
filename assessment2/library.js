@@ -146,6 +146,7 @@ function runLibrary() {
     console.log("----------------------------------");
   }
 
+  //the logic for this probably isn't complete
   function adjustIDs(index) {
     for (var key in inventory.books) {
       if (inventory.books.hasOwnProperty(key) && inventory.books[key].id > index) {
@@ -193,9 +194,43 @@ function runLibrary() {
     }
   }
 
-
-
-
+  function searchBook() {
+    var found = false;
+    console.log("----------------------------------");
+    var divider = sget("What would you like to search by? Title or author?").trim().toLowerCase();
+    console.log("----------------------------------");
+    if (divider === "title") {
+      var bookTitle = sget("What is the title of the book you want to find?").trim().toLowerCase();
+      for (var key1 in inventory.books) {
+        if (inventory.books.hasOwnProperty(key1) && inventory.books[key1].title === bookTitle) {
+          console.log("That book is in our inventory. Go back to the main menu if you want to check it out.");
+          console.log("----------------------------------");
+          found = true;
+        }
+      }
+      if (found === false) { console.log("That book isn't in our inventory."); }
+    } else if (divider === "author") {
+      var bookAuthor = sget("Who is the author you want to find?").trim().toLowerCase();
+      console.log("----------------------------------");
+      console.log("Here are all the books written by that author.");
+      for (var key2 in inventory.books) {
+        if (inventory.books.hasOwnProperty(key2) && inventory.books[key2].author === bookAuthor) {
+          console.log("title: " + inventory.books[key2].title);
+          console.log("    checked out?: " + inventory.books[key2].borrowStatus);
+          if (inventory.books[key2].borrowStatus === true) {
+            console.log("    borrower: " + inventory.books[key2].borrower);
+            console.log("    return date: " + inventory.books[key2].returnDate);
+          }
+          console.log("----------------------------------");
+          found = true;
+        }
+      }
+      if (found === false) { console.log("That author isn't in our inventory."); }
+    } else {
+      console.log("Invalid input. Try again.");
+      searchBook();
+    }
+  }
 
 }
 
