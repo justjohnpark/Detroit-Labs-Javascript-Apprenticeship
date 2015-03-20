@@ -63,7 +63,7 @@ function runLibrary() {
   initializeLibrary();
 
 
-  // So I have an ID system in place but I've let the user search for unique books by title. So this library assumes that there'll be no two books with the same title. Having the user search by ID seemed faulty (who remembers book id names?) and since this is a terminal program, I couldn't have something conveniently pop up to show all the books and their corresponding IDs.
+  // Sooo I have an ID system in place but I've let the user search for unique books by title. So this library assumes that there'll be no two books with the same title. Having the user search by ID seemed faulty (who remembers book id names?) and since this is a terminal program, I couldn't have something conveniently pop up to show all the books and their corresponding IDs.
 
   function initializeLibrary() {
     var template = { id: Object.size(inventory.books), title: "on the road", author: "jack kerouac", genre: "beat", bookLength: 320 };
@@ -83,6 +83,7 @@ function runLibrary() {
     console.log("----------------------------------")
     var quit = false;
     while(!quit) {
+      checkOverdueStatus();
       var choice = sget("What would you like do?\n (1) Add a book to inventory\n (2) Remove a book from inventory\n (3) View all books\n (4) View all books given a genre\n (5) Search for a book by title or author\n (6) Checkout a book\n (7) Return a book\n (8) Exit").trim();
       switch (choice) {
         case "1":
@@ -272,6 +273,14 @@ function runLibrary() {
     console.log("----------------------------------");
   }
 
+  function checkOverdueStatus() {
+    var now = new Date();
+    for (var key in inventory.books) {
+      if (inventory.books.hasOwnProperty(key) && inventory.books[key].borrowStatus === true && inventory.books[key].returnDate < now) {
+        inventory.books[key].overdue = true;
+      }
+    }
+  }
 
 }
 
